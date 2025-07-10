@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 import { EventModule } from './event/event.module';
 import { AttendeeModule } from './attendee/attendee.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { UserModule } from './user/user.module';
     DatabaseModule,
     EventModule,
     AttendeeModule,
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

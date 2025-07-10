@@ -2,23 +2,32 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { promises } from 'dns';
 import { User } from 'src/user/entities/user.entity';
+import { createHashValue } from 'src/utils/hash';
 import { Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
-    user : User[]=[]
+    users : User[]=[]
 
     constructor(@InjectRepository(User)
     private userRepo : Repository<User>){}
 
 
     async findAll(): Promise<User[]>{
-        this.user= await this.userRepo.find();
-        return this.user
+        this.users= await this.userRepo.find();
+        return this.users
     }
 
-    public signUpUser(signUpUserdto): Promise<User[]>{
-        const users = this.userRepo.create(signUpUserdto);
+    async getUserByemail(email:string):Promise<User | null>{
+        const user = await this.userRepo.findOne({where:{email: email}})
+        return user
+    }
+
+    public async signUpUser(signUpUserdto): Promise<User[]>{
+        const {password} = signUpUserdto
+        const hashedPsw = await createHashValue(password)
+        console.log("contraseña encriptada: ",hashedPsw);
+        const users = this.userRepo.create({...signUpUserdto, password : hashedPsw});
         return this.userRepo.save(users);
     }
 }
