@@ -26,7 +26,6 @@ export class UserService {
     public async signUpUser(signUpUserdto): Promise<User[]>{
         const {password} = signUpUserdto
         const hashedPsw = await createHashValue(password)
-        console.log("contraseña encriptada: ",hashedPsw);
         const users = this.userRepo.create({...signUpUserdto, password : hashedPsw});
         return this.userRepo.save(users);
     }

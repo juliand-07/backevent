@@ -20,7 +20,7 @@ export class AuthService {
         
         if(!valuepsw) throw new UnauthorizedException('Contraseña incorrecta');
 
-        const {password: _, ...result}= user;
+        const {password: _, ...result}= user;        
         return result;
     }
 
